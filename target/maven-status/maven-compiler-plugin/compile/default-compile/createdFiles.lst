@@ -1,1 +1,11 @@
+com\stylesmart\security\JwtService.class
+com\stylesmart\dto\auth\RegisterRequest.class
+com\stylesmart\dto\auth\LoginRequest.class
+com\stylesmart\security\SecurityConfig.class
+com\stylesmart\dto\auth\AuthResponse.class
+com\stylesmart\repository\UserRepository.class
 com\stylesmart\StyleSmartsApplication.class
+com\stylesmart\controller\AuthController.class
+com\stylesmart\entity\User.class
+com\stylesmart\config\SwaggerConfig.class
+com\stylesmart\service\AuthService.class
