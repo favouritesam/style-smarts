@@ -87,6 +87,19 @@
         <scope>test</scope>
     </dependency>
 
+    <dependency>
+        <groupId>com.cloudinary</groupId>
+        <artifactId>cloudinary-http5</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+
+    <!-- Spring Boot Mail Starter: This dependency provides everything needed to send emails -->
+    <!-- It includes JavaMailSender which we use to send HTML emails via SMTP -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
+
     </dependencies>
 
     <build>
