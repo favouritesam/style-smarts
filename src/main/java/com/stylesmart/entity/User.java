@@ -54,6 +54,29 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // Profile picture URL hosted on Cloudinary
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
+    // ============================================================
+    // TWO-FACTOR AUTHENTICATION (2FA) FIELDS
+    // ============================================================
+    
+    // Flag to track if 2FA is enabled for this user
+    // When true, user must provide a verification code during login
+    @Column(name = "two_factor_enabled")
+    private Boolean twoFactorEnabled = false;
+
+    // Secret key used to generate 2FA verification codes
+    // This is a random 6-digit code sent via email during 2FA setup
+    @Column(name = "two_factor_secret")
+    private String twoFactorSecret;
+
+    // Timestamp when the 2FA code was generated
+    // Used to enforce code expiration (codes expire after 5 minutes)
+    @Column(name = "two_factor_code_generated_at")
+    private LocalDateTime twoFactorCodeGeneratedAt;
+
     // Default constructor - required by JPA
     public User() {
     }
@@ -84,6 +107,26 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    // ============================================================
+    // 2FA SETTERS AND GETTERS
+    // ============================================================
+    
+    public void setTwoFactorEnabled(Boolean twoFactorEnabled) {
+        this.twoFactorEnabled = twoFactorEnabled;
+    }
+    
+    public void setTwoFactorSecret(String twoFactorSecret) {
+        this.twoFactorSecret = twoFactorSecret;
+    }
+    
+    public void setTwoFactorCodeGeneratedAt(LocalDateTime twoFactorCodeGeneratedAt) {
+        this.twoFactorCodeGeneratedAt = twoFactorCodeGeneratedAt;
     }
 
 }

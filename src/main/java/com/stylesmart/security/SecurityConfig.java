@@ -1,12 +1,15 @@
 package com.stylesmart.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // This annotation marks this class as a Spring Configuration class
 // It contains bean definitions and security configuration
@@ -14,6 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 // This annotation enables Spring Security web security support
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // Inject JwtFilter to authenticate requests with JWT tokens
+    @Autowired
+    private JwtFilter jwtFilter;
+
+    // Inject JwtAuthenticationEntryPoint to handle unauthorized requests
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     // This annotation defines a bean that Spring will manage
     // A PasswordEncoder bean is required to encode passwords before storing them
@@ -32,22 +43,33 @@ public class SecurityConfig {
         // For REST APIs with JWT, CSRF is typically disabled
         http.csrf(csrf -> csrf.disable());
 
-        // Step 2: Configure authorization rules
+        // Step 2: Configure stateless session management
+        // We tell Spring Security not to create sessions on the server (stateless)
+        http.sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
+        // Step 3: Configure unauthorized request handling
+        // If authentication fails, use our custom JwtAuthenticationEntryPoint
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        );
+
+        // Step 4: Configure authorization rules
         http.authorizeHttpRequests(auth -> auth
-                // Allow all requests to /api/auth/register without authentication
-                // This means anyone can register without being logged in
-                .requestMatchers("/api/auth/register").permitAll()
-                // Allow all requests to /api/auth/login without authentication
-                // This means anyone can login without being logged in
-                .requestMatchers("/api/auth/login").permitAll()
+                // Allow all requests to /api/auth/register and /api/auth/login without authentication
+                .requestMatchers("/api/auth/**").permitAll()
                 // Allow Swagger UI endpoints without authentication
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 // All other requests require authentication
-                // Later, we'll add more endpoints here (like wardrobe, etc.)
                 .anyRequest().authenticated()
         );
 
-        // Step 3: Build and return the SecurityFilterChain
+        // Step 5: Add our custom JWT Filter before the standard UsernamePasswordAuthenticationFilter
+        // This ensures the JWT is verified and security context set before reaching Spring's authentication filter
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Step 6: Build and return the SecurityFilterChain
         return http.build();
     }
 }
