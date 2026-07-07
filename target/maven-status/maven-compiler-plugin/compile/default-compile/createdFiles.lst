@@ -11,6 +11,7 @@ com\stylesmart\security\JwtFilter.class
 com\stylesmart\StyleSmartsApplication.class
 com\stylesmart\service\NotificationService.class
 com\stylesmart\dto\auth\RegisterRequest.class
+com\stylesmart\dto\weather\WeatherResponse.class
 com\stylesmart\controller\NotificationController.class
 com\stylesmart\service\CloudinaryService.class
 com\stylesmart\security\SecurityConfig.class
@@ -19,7 +20,9 @@ com\stylesmart\repository\UserRepository.class
 com\stylesmart\service\EmailService.class
 com\stylesmart\controller\AuthController.class
 com\stylesmart\entity\User.class
+com\stylesmart\service\WeatherService.class
 com\stylesmart\service\AuthService.class
 com\stylesmart\dto\profile\ProfileResponse.class
+com\stylesmart\controller\WeatherController.class
 com\stylesmart\service\TwoFactorAuthService.class
 com\stylesmart\config\SwaggerConfig.class

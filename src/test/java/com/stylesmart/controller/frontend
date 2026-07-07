@@ -1,0 +1,13 @@
+navigator.geolocation.getCurrentPosition((position) => {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+
+  fetch(`http://localhost:8082/api/weather/current?lat=${lat}&lon=${lon}`)
+    .then(response => response.json())
+    .then(data => {
+      // Display: data.temperature, data.condition, data.location
+    });
+});
+
+
+The endpoint returns all the data you requested: temperature, weather condition (sunny/cloudy/rainy), verified location, and forecast.
