@@ -26,18 +26,21 @@ public class CloudinaryService {
      * @return the secure URL of the uploaded image.
      * @throws IOException if network or file reading fails.
      */
-    public String uploadImage(MultipartFile file) throws IOException {
-        // Step 1: Upload the file bytes to Cloudinary.
-        // We specify the folder option to organize assets in the cloud.
-        Map<?, ?> uploadResult = cloudinary.uploader().upload(
-                file.getBytes(),
-                ObjectUtils.asMap("folder", "profile_pictures")
-        );
+    public String uploadImage(MultipartFile file) {
 
-        // Step 2: Extract and return the secure SSL HTTPS URL
-        return uploadResult.get("secure_url").toString();
+        try {
+
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    Map.of()
+            );
+
+            return uploadResult.get("secure_url").toString();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image to Cloudinary", e);
+        }
     }
-
     /**
      * Deletes an image from Cloudinary using its public ID.
      *

@@ -44,6 +44,7 @@ public class AuthController {
         }
     }
 
+
     // This annotation maps HTTP POST requests to this method
     // The endpoint will be /api/auth/login
     @PostMapping("/login")
@@ -65,4 +66,5 @@ public class AuthController {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
+
 }
