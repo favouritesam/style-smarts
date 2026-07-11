@@ -16,4 +16,5 @@ public class ItemResponseDTO  {
     private Category category;
     private String colorIdentity;
     private String imageUrl;
+    private  Boolean favourite;
 }
