@@ -29,4 +29,7 @@ public class WardrobeItem {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Builder.Default
+    private Boolean favorite = false;
 }
